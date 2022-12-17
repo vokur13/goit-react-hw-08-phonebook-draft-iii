@@ -4,30 +4,30 @@ import { GlobalStyle } from 'GlobalStyle';
 import { Toaster } from 'react-hot-toast';
 import { Layout } from 'components/Layout';
 import { HomeView } from 'views/HomeView';
-import { ContactsView } from 'views/ContactsView';
-import { RegisterView } from 'views/RegisterView';
-import { LoginView } from 'views/LoginView';
+// import { ContactsView } from 'views/ContactsView';
+// import { RegisterView } from 'views/RegisterView';
+// import { LoginView } from 'views/LoginView';
 
-// const ContactsView = lazy(() =>
-//   import('../views/ContactsView').then(module => ({
-//     ...module,
-//     default: module.ContactsView,
-//   }))
-// );
+const ContactsView = lazy(() =>
+  import('../views/ContactsView').then(module => ({
+    ...module,
+    default: module.ContactsView,
+  }))
+);
 
-// const RegisterView = lazy(() =>
-//   import('../views/RegisterView').then(module => ({
-//     ...module,
-//     default: module.RegisterView,
-//   }))
-// );
+const RegisterView = lazy(() =>
+  import('../views/RegisterView').then(module => ({
+    ...module,
+    default: module.RegisterView,
+  }))
+);
 
-// const LoginView = lazy(() =>
-//   import('../views/LoginView').then(module => ({
-//     ...module,
-//     default: module.LoginView,
-//   }))
-// );
+const LoginView = lazy(() =>
+  import('../views/LoginView').then(module => ({
+    ...module,
+    default: module.LoginView,
+  }))
+);
 
 export const App = () => {
   return (
