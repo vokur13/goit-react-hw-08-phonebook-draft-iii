@@ -1,4 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { logOut } from 'redux/auth/operations';
 import { fetchContacts, addContact, deleteContact } from './operations';
 import { changeFilter } from './actions';
@@ -17,8 +17,6 @@ const handleRejected = (state, action) => {
   state.isDeleting = false;
   state.error = action.payload;
 };
-
-// export const findContact = createAction('findContact');
 
 const initialState = {
   contacts: {
