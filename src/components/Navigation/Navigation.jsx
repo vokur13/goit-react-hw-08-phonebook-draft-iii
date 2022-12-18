@@ -15,13 +15,13 @@ export const Navigation = () => {
 
   return (
     <Box as="nav" display="flex">
-      {/* {navItems.map(({ id, href, text }) => (
+      {navItems.map(({ href, text }) => (
         <NavItem key={href} to={href}>
           {text}
         </NavItem>
-      ))} */}
-      <NavItem to="/">Home</NavItem>
-      {isLoggedIn && <NavItem to="/contacts">Contacts</NavItem>}
+      ))}
+      {/* <NavItem to="/">Home</NavItem>
+      {isLoggedIn && <NavItem to="/contacts">Contacts</NavItem>} */}
     </Box>
   );
 };

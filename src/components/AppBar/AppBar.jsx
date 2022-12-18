@@ -5,13 +5,12 @@ import { AuthNav } from 'components/AuthNav';
 import { useAuth } from 'hooks';
 
 export const AppBar = () => {
-  // const { isRefreshing } = useAuth();
   const { isLoggedIn } = useAuth();
 
   return (
     <Box
       as="header"
-      // position="fixed"
+      position="fixed"
       width={1}
       display="flex"
       alignItems="center"
@@ -27,7 +26,6 @@ export const AppBar = () => {
         justifyContent="space-between"
         py={3}
       >
-        {/* {!isRefreshing && <Navigation />} */}
         <Navigation />
         {isLoggedIn ? <UserMenu /> : <AuthNav />}
       </Box>

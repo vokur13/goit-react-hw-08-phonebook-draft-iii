@@ -10,8 +10,6 @@ export const ContactForm = ({ onFormSubmit, isLoading }) => {
   const nameId = nanoid();
   const phoneID = nanoid();
 
-  //   const [isActive, setIsActive] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -77,8 +75,6 @@ export const ContactForm = ({ onFormSubmit, isLoading }) => {
     </Box>
   );
 };
-
-// disabled={!data}
 
 ContactForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,

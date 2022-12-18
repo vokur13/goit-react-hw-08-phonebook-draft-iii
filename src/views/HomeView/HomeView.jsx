@@ -1,28 +1,17 @@
 import { Box } from 'components/Box';
-
-const styles = {
-  container: {
-    minHeight: 'calc(100vh - 50px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontWeight: 500,
-    fontSize: 48,
-    textAlign: 'center',
-  },
-};
+import { Title } from './HomeView.styled';
 
 export const HomeView = () => {
   return (
-    <Box style={styles.container}>
-      <h1 style={styles.title}>
-        PhoneBook
-        {/* <span role="img" aria-label="Greeting icon">
-          💁‍♀️
-        </span> */}
-      </h1>
+    <Box
+      height="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      fontSize="72px"
+      color="#010101"
+    >
+      <Title>PhoneBook</Title>
     </Box>
   );
 };
