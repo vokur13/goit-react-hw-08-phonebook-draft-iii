@@ -1,19 +1,20 @@
-// import { authOperations, authSelectors } from '../../redux/auth';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { logOut } from 'redux/auth/operations';
+import { useAuth } from 'hooks';
 import { Box } from 'components/Box';
 import { Paragraph } from './UserMenu.styled';
 import { Button } from 'components/Button';
 
 export const UserMenu = () => {
-  // const dispatch = useDispatch();
-  // const email = useSelector(authSelectors.getUseremail);
+  const dispatch = useDispatch();
+  const { user } = useAuth();
 
   return (
     <Box display="flex" alignItems="center">
-      {/* <Paragraph>{email}</Paragraph> */}
-      <Paragraph>email@msn.com</Paragraph>
-      {/* <Button type="button" onClick={() => dispatch(authOperations.logOut())}> */}
-      <Button type="button">Logout</Button>
+      <Paragraph>{user.email}</Paragraph>
+      <Button type="button" onClick={() => dispatch(logOut())}>
+        Logout
+      </Button>
     </Box>
   );
 };

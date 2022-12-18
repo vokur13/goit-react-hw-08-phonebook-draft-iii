@@ -1,12 +1,22 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet';
+// import { TaskList } from 'components/TaskList/TaskList';
+// import { TaskEditor } from 'components/TaskEditor/TaskEditor';
+import { fetchContacts, addContact } from 'redux/contacts/operations';
+// import { selectLoading } from 'redux/tasks/selectors';
+import { useContacts } from 'hooks';
+import { Title } from './ContactsView.styled';
+
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  useGetContactsQuery,
-  useAddContactMutation,
-} from 'redux/contacts/contacts';
-import { contactsSelectors, contactsSlice } from 'redux/contacts';
+// import {
+//   useGetContactsQuery,
+//   useAddContactMutation,
+// } from 'redux/contacts/contacts';
+// import { contactsSelectors, contactsSlice } from 'redux/contacts';
 import { Box } from 'components/Box';
 import { ContactForm } from 'components/ContactForm';
 import { Filter } from 'components/Filter';
@@ -15,46 +25,39 @@ import { nanoid } from 'nanoid';
 
 export const ContactsView = () => {
   const dispatch = useDispatch();
-  const { data, error, isUninitialized, isFetching } = useGetContactsQuery('', {
-    // skip: '' === '',
-    // pollingInterval: 3000,
-    // refetchOnFocus: true,
-    refetchOnReconnect: true,
-  });
+  const { isLoading, items, filter, error } = useContacts();
 
-  const [addContact, { isLoading }] = useAddContactMutation();
-  const filter = useSelector(contactsSelectors.selectFilter);
-  const notify = text => toast(text);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+  // const { data, error, isUninitialized, isFetching } = useGetContactsQuery('', {
+  //   // skip: '' === '',
+  //   // pollingInterval: 3000,
+  //   // refetchOnFocus: true,
+  //   refetchOnReconnect: true,
+  // });
 
-  console.log(isUninitialized);
+  // const [addContact, { isLoading }] = useAddContactMutation();
+  // const filter = useSelector(contactsSelectors.selectFilter);
+  // const notify = text => toast(text);
 
-  async function handleSubmit({ lastName, firstName, phone }) {
-    try {
-      const checkName = data.some(
-        item =>
-          item.lastName.toLowerCase().trim() ===
-            lastName.toLowerCase().trim() &&
-          item.firstName.toLowerCase().trim() === firstName.toLowerCase().trim()
-      );
-      checkName
-        ? alert(`${(lastName, firstName)} is already in contacts`)
-        : await addContact(
-            {
-              id: nanoid(),
-              lastName,
-              firstName,
-              phone,
-            },
-            notify(`Contact ${lastName} ${firstName} created`)
-          );
-    } catch (error) {
-      console.log(error.message);
-    }
+  function handleSubmit({ name, number }) {
+    const checkName = items.some(
+      item => item.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+    checkName
+      ? alert(`${name} is already in contacts`)
+      : dispatch(
+          addContact({
+            // id: nanoid(),
+            name,
+            number,
+          })
+        );
   }
 
   function onFilterChange([value]) {
-    dispatch(contactsSlice.findContact(value));
-
+    // dispatch(contactsSlice.findContact(value));
     // !value
     //   ? dispatch(contactsSlice.findContact((value = '')))
     //   : dispatch(contactsSlice.findContact(value));
@@ -62,26 +65,36 @@ export const ContactsView = () => {
 
   const filteredItems = useMemo(() => {
     if (filter) {
-      return data.filter(item => {
-        return item.lastName
+      return items.filter(item => {
+        return item.name
           .toLowerCase()
           .trim()
           .includes(filter.toLowerCase().trim());
       });
     }
-    return data;
-  }, [data, filter]);
+    return items;
+  }, [filter, items]);
 
   return (
-    <Box width={1} p={4} bg="bgBasic" as="main">
-      <ToastContainer />
-      {error && <p>{error}</p>}
-      <h1>Phonebook</h1>
-      <ContactForm onFormSubmit={handleSubmit} isLoading={isLoading} />
-      <h2>Contacts</h2>
-      <Filter onChange={onFilterChange} />
-      {isFetching && <p>Loading contacts...</p>}
-      {data && data.length > 0 && <ContactList list={filteredItems} />}
+    <Box
+      width={1}
+      p={4}
+      as="main"
+      paddingTop={75}
+      display="grid"
+      gridTemplateColumns="1fr 1fr"
+    >
+      <Box width={1}>
+        {error && <p>{error}</p>}
+        <Title>Add contact</Title>
+        <ContactForm onFormSubmit={handleSubmit} />
+        <h2>Find contact</h2>
+        <Filter onChange={onFilterChange} />
+      </Box>
+      <Box width={1}>
+        {isLoading && <p>Loading contacts...</p>}
+        {items && items.length > 0 && <ContactList list={filteredItems} />}
+      </Box>
     </Box>
   );
 };

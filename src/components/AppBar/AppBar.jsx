@@ -1,14 +1,12 @@
-// import { useSelector } from 'react-redux';
 import { Box } from 'components/Box';
 import { Navigation } from 'components/Navigation';
-import { AuthNav } from 'components/AuthNav';
 import { UserMenu } from 'components/UserMenu';
-// import { authSelectors } from '../../redux/auth';
-// import { useAuth } from 'hooks';
+import { AuthNav } from 'components/AuthNav';
+import { useAuth } from 'hooks';
 
 export const AppBar = () => {
-  // const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
   // const { isRefreshing } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <Box
@@ -31,9 +29,7 @@ export const AppBar = () => {
       >
         {/* {!isRefreshing && <Navigation />} */}
         <Navigation />
-        <AuthNav />
-        <UserMenu />
-        {/* {isLoggedIn ? <UserMenu /> : <AuthNav />} */}
+        {isLoggedIn ? <UserMenu /> : <AuthNav />}
       </Box>
     </Box>
   );

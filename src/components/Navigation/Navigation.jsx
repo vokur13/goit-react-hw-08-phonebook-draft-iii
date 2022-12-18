@@ -1,23 +1,23 @@
 import React from 'react';
 import { NavItem } from './Navigation.styled';
 import { Box } from 'components/Box';
-// import { useSelector } from 'react-redux';
-// import { authSelectors } from '../../redux/auth';
+import { useAuth } from 'hooks';
+import { nanoid } from 'nanoid';
 
 export const Navigation = () => {
-  // const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
+  const { isLoggedIn } = useAuth();
 
   const navItems = [
-    { href: '/', text: 'Home' },
+    { id: nanoid(), href: '/', text: 'Home' },
     // { href: '/', text: 'Home', icon: SomeIcon },
-    // isLoggedIn && { href: 'contacts', text: 'Contacts' },
-    { href: 'contacts', text: 'Contacts' },
+    isLoggedIn && { id: nanoid(), href: 'contacts', text: 'Contacts' },
+    // { href: 'contacts', text: 'Contacts' },
   ];
 
   return (
     <Box as="nav" display="flex">
-      {navItems.map(({ href, text }) => (
-        <NavItem key={href} to={href}>
+      {navItems.map(({ id, href, text }) => (
+        <NavItem key={id} to={href}>
           {text}
         </NavItem>
       ))}
