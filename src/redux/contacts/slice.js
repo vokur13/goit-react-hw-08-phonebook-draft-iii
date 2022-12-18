@@ -1,6 +1,7 @@
 import { createSlice, createAction } from '@reduxjs/toolkit';
 import { logOut } from 'redux/auth/operations';
 import { fetchContacts, addContact, deleteContact } from './operations';
+import { changeFilter } from './actions';
 
 function isRejectedAction(action) {
   return action.type.endsWith('rejected');
@@ -8,19 +9,22 @@ function isRejectedAction(action) {
 
 const handlePending = state => {
   state.isLoading = true;
+  state.isDeleting = true;
 };
 
 const handleRejected = (state, action) => {
   state.isLoading = false;
+  state.isDeleting = false;
   state.error = action.payload;
 };
 
-export const findContact = createAction('findContact');
+// export const findContact = createAction('findContact');
 
 const initialState = {
   contacts: {
     items: [],
     isLoading: false,
+    isDeleting: false,
     error: null,
   },
   filter: '',
@@ -49,6 +53,7 @@ const contactsSlice = createSlice({
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isDeleting = false;
         state.error = null;
         const index = state.items.findIndex(
           item => item.id === action.payload.id
@@ -60,7 +65,7 @@ const contactsSlice = createSlice({
         state.error = null;
         state.isLoading = false;
       })
-      .addCase(findContact, (state, action) => {
+      .addCase(changeFilter, (state, action) => {
         state.filter = action.payload;
       })
       .addMatcher(

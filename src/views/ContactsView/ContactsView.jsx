@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 // import { TaskList } from 'components/TaskList/TaskList';
 // import { TaskEditor } from 'components/TaskEditor/TaskEditor';
 import { fetchContacts, addContact } from 'redux/contacts/operations';
+import { changeFilter } from 'redux/contacts/actions';
 // import { selectLoading } from 'redux/tasks/selectors';
 import { useContacts } from 'hooks';
 import { Title } from './ContactsView.styled';
@@ -12,10 +13,10 @@ import { useMemo } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import {
-//   useGetContactsQuery,
-//   useAddContactMutation,
-// } from 'redux/contacts/contacts';
+import {
+  useGetContactsQuery,
+  useAddContactMutation,
+} from 'redux/contacts/query';
 // import { contactsSelectors, contactsSlice } from 'redux/contacts';
 import { Box } from 'components/Box';
 import { ContactForm } from 'components/ContactForm';
@@ -26,6 +27,7 @@ import { nanoid } from 'nanoid';
 export const ContactsView = () => {
   const dispatch = useDispatch();
   const { isLoading, items, filter, error } = useContacts();
+  // const { filter } = useContacts();
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -57,10 +59,7 @@ export const ContactsView = () => {
   }
 
   function onFilterChange([value]) {
-    // dispatch(contactsSlice.findContact(value));
-    // !value
-    //   ? dispatch(contactsSlice.findContact((value = '')))
-    //   : dispatch(contactsSlice.findContact(value));
+    dispatch(changeFilter(value));
   }
 
   const filteredItems = useMemo(() => {
@@ -93,6 +92,7 @@ export const ContactsView = () => {
       </Box>
       <Box width={1}>
         {isLoading && <p>Loading contacts...</p>}
+        {/* {isFetching && <p>Loading contacts...</p>} */}
         {items && items.length > 0 && <ContactList list={filteredItems} />}
       </Box>
     </Box>

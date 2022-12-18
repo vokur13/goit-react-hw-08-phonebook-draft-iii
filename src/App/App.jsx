@@ -6,10 +6,9 @@ import { Toaster } from 'react-hot-toast';
 import { Layout } from 'components/Layout';
 import { HomeView } from 'views/HomeView';
 import { refreshUser } from 'redux/auth/operations';
+import { PrivateRoute } from '../components/PrivateRoute';
+import { RestrictedRoute } from '../components/RestrictedRoute';
 import { useAuth } from 'hooks';
-// import { ContactsView } from 'views/ContactsView';
-// import { RegisterView } from 'views/RegisterView';
-// import { LoginView } from 'views/LoginView';
 
 const ContactsView = lazy(() =>
   import('../views/ContactsView').then(module => ({
@@ -46,11 +45,35 @@ export const App = () => {
         <b>Refreshing user...</b>
       ) : (
         <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomeView />} />
-            <Route path="/contacts" element={<ContactsView />} />
-            <Route path="/register" element={<RegisterView />} />
-            <Route path="/login" element={<LoginView />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomeView />} />
+            <Route
+              path="/contacts"
+              element={
+                <PrivateRoute
+                  redirectTo="/login"
+                  component={<ContactsView />}
+                />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <RestrictedRoute
+                  redirectTo="/contacts"
+                  component={<RegisterView />}
+                />
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <RestrictedRoute
+                  redirectTo="/contacts"
+                  component={<LoginView />}
+                />
+              }
+            />
           </Route>
         </Routes>
       )}
